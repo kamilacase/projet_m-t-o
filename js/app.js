@@ -1,49 +1,76 @@
 $(document).ready(function(){
-  console.log('hello world');
-  
-  var mymap = L.map('mapid').setView([42.1, 8.7], 7);
-  var marker = L.marker([51.5, -0.09]).addTo(mymap);
-  
-  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-    maxZoom: 18,
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-      '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-      'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    id: 'mapbox.streets'
-  }).addTo(mymap);
 
-var circle = L.circle([51.508, -0.11], {
-  color: 'red',
-  fillColor: '#f03',
-  fillOpacity: 0.5,
-  radius: 500
-}).addTo(mymap);
-var polygon = L.polygon([
-  [51.509, -0.08],
-  [51.503, -0.06],
-  [51.51, -0.047]
-]).addTo(mymap);
-marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-circle.bindPopup("I am a circle.");
-polygon.bindPopup("I am a polygon.");
-var popup = L.popup()
-.setLatLng([51.5, -0.09])
-.setContent("I am a standalone popup.")
-.openOn(mymap);
+    $.ajax({
+        url : 'https://public.opendatasoft.com/api/records/1.0/search/?dataset=contours-simplifies-des-departements-francais-2015&rows=150&facet=code_dept',
+        type : 'GET', // Le type de la requête HTTP.
+        dataType: "JSON",
 
-function onMapClick(e) {
-  alert("You clicked the map at " + e.latlng);
-}
+       success : function(data, statut){ // code_html contient le HTML renvoyé
+           console.log(data.records);
+           var mymap = L.map('mapid').setView([	46.467837, 2.136167], 56);
+           // var marker = L.marker([51.5, -0.09]).addTo(mymap);
 
-mymap.on('click', onMapClick);
-var popup = L.popup();
+           L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+               maxZoom: 18,
+               attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+               '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+               'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+               id: 'mapbox.streets'
+           }).addTo(mymap);
 
-function onMapClick(e) {
-  popup
-  .setLatLng(e.latlng)
-  .setContent("You clicked the map at " + e.latlng.toString())
-  .openOn(mymap);
-}
+           for (var i = 0; i < data.records.length; i++) {
 
-mymap.on('click', onMapClick);
-})
+
+               L.geoJSON(data.records[i].fields.geo_shape).addTo(mymap);
+
+
+
+
+           }
+
+
+           // var circle = L.circle([51.508, -0.11], {
+           //     color: 'red',
+           //     fillColor: '#f03',
+           //     fillOpacity: 0.5,
+           //     radius: 500
+           // }).addTo(mymap);
+
+
+           // marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
+           // circle.bindPopup("I am a circle.");
+           // polygon.bindPopup("I am a polygon.");
+           // var popup = L.popup()
+           // .setLatLng([51.5, -0.09])
+           // .setContent("I am a standalone popup.")
+           // .openOn(mymap);
+
+           // function onMapClick(e) {
+           //     alert("You clicked the map at " + e.latlng);
+           // }
+
+           // mymap.on('click', onMapClick);
+           var popup = L.popup();
+
+           // function onMapClick(e) {
+           //     popup
+           //     .setLatLng(e.latlng)
+           //     .setContent("You clicked the map at " + e.latlng.toString())
+           //     .openOn(mymap);
+           // }
+
+           // mymap.on('click', onMapClick);
+       }
+
+
+
+
+
+
+
+   })
+
+
+
+
+});
