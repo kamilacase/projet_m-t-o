@@ -37,10 +37,12 @@ $(document).ready(function(){
 
                  success : function(city){
 
-
-                     L.marker([city["coord"]["lat"],city["coord"]["lon"]]).addTo(mymap);
                      //
-                     // var marker = L.marker([data.coord]).addTo(mymap);
+                     //     console.log("data")
+                     //
+
+                     //
+                     L.marker([city["coord"]["lat"],city["coord"]["lon"]]).addTo(mymap);
                      // var popup = L.pop()
                      // .setLatLng(data.coord)
                      // .setContent(data.weather[0].main)
