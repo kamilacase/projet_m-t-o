@@ -37,8 +37,17 @@ $(document).ready(function(){
 
                  success : function(city){
 
-
-                     L.marker([city["coord"]["lat"],city["coord"]["lon"]]).addTo(mymap);
+                     var mark = L.marker([city["coord"]["lat"], city["coord"]["lon"]]);
+                     var icon = city["weather"][0]["icon"];
+                     var tempe = city["main"]["temp"];
+                     var celsius = tempe - 273;
+                     var imgUrl = 'https://openweathermap.org/img/w/' + icon +'.png';
+                     var iconImg = '<img src="' + imgUrl +'" alt="">'
+                     mark.bindPopup(city["name"]+iconImg+celsius).openPopup();
+                     mark.addTo(mymap);
+                     console.log(icon);
+                     
+                     
                      //
                      // var marker = L.marker([data.coord]).addTo(mymap);
                      // var popup = L.pop()
